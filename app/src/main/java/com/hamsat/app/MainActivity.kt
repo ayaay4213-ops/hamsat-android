@@ -1,0 +1,108 @@
+package com.hamsat.app
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+private val night = Color(0xFF100A1D)
+private val gold = Color(0xFFF1C66D)
+private val lilac = Color(0xFFD7B9FF)
+
+class MainActivity : ComponentActivity() {
+ override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState); setContent { HamsatApp() } }
+}
+
+@Composable
+fun HamsatApp() {
+ var page by remember { mutableStateOf("welcome") }
+ var room by remember { mutableStateOf("مجلس همسات") }
+ var coins by remember { mutableIntStateOf(1200) }
+ MaterialTheme(colorScheme = darkColorScheme(primary = gold, background = night, surface = Color(0xFF24172F))) {
+  Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF321347), night, Color(0xFF09070D))))) {
+   when (page) {
+    "welcome" -> Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+     Text("♛", color = gold, fontSize = 64.sp)
+     Text("همسات", color = gold, fontSize = 42.sp, fontWeight = FontWeight.Bold)
+     Text("H A M S A T", color = lilac, letterSpacing = 4.sp)
+     Spacer(Modifier.height(16.dp)); Text("غرف صوتية • أصدقاء • سهرات", color = Color.White)
+     Spacer(Modifier.height(36.dp)); GoldButton("دخول إلى همسات") { page = "home" }
+     Spacer(Modifier.height(12.dp)); OutlinedButton(onClick = { page = "register" }, modifier = Modifier.fillMaxWidth()) { Text("إنشاء حساب جديد", color = Color.White) }
+     Spacer(Modifier.height(12.dp)); Text("نسخة أولية: الحسابات والصوت الحقيقي غير مربوطين بعد", color = lilac, fontSize = 11.sp)
+    }
+    "home" -> Column(Modifier.fillMaxSize().padding(18.dp)) {
+     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+      Column { Text("أهلًا بك في", color = lilac); Text("همسات ♛", color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold) }
+      Text("🪙 $coins", color = gold, modifier = Modifier.clickable { page = "wallet" }.padding(10.dp))
+     }
+     Spacer(Modifier.height(20.dp)); Text("الغرف الصوتية", color = gold, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+     Text("غرف تجريبية للعرض فقط", color = lilac, fontSize = 12.sp); Spacer(Modifier.height(12.dp))
+     val rooms = listOf("مجلس همسات" to "🎙️ 8 متصلين", "سهرات على الهوا" to "🌙 16 متصلًا", "قهوة الأصدقاء" to "☕ 5 متصلين", "فضفضة همسات" to "💜 3 متصلين")
+     LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+      items(rooms) { item ->
+       Surface(color = Color(0xFF24172F), shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth().clickable { room = item.first; page = "room" }) {
+        Row(Modifier.padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
+         Text("🎧", fontSize = 25.sp); Spacer(Modifier.width(12.dp))
+         Column(Modifier.weight(1f)) { Text(item.first, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 17.sp); Text(item.second, color = lilac, fontSize = 12.sp) }
+         Text("دخول ←", color = gold)
+        }
+       }
+      }
+     }
+     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+      Text("الرئيسية", color = gold)
+      Text("الأصدقاء", color = Color.White, modifier = Modifier.clickable { page = "friends" })
+      Text("المحفظة", color = Color.White, modifier = Modifier.clickable { page = "wallet" })
+      Text("حسابي", color = Color.White, modifier = Modifier.clickable { page = "profile" })
+     }
+    }
+    "room" -> Column(Modifier.fillMaxSize().padding(22.dp)) {
+     Text("‹ رجوع", color = gold, modifier = Modifier.clickable { page = "home" })
+     Spacer(Modifier.height(26.dp)); Text(room, color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+     Text("غرفة تجريبية — البث الصوتي غير مفعّل بعد", color = lilac); Spacer(Modifier.height(36.dp))
+     repeat(3) { i -> Surface(color = Color(0xFF382249), shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) { Text(if (i == 0) "🎙️ مقعد المضيف" else "🎧 مقعد " + (i + 1), color = Color.White, modifier = Modifier.padding(20.dp)) } }
+     Spacer(Modifier.weight(1f)); GoldButton("طلب المايك (تجريبي)") {}; Spacer(Modifier.height(10.dp)); GoldButton("🎁 الهدايا والمحفظة") { page = "wallet" }
+    }
+    "wallet" -> Column(Modifier.fillMaxSize().padding(22.dp)) {
+     Text("‹ رجوع", color = gold, modifier = Modifier.clickable { page = "home" }); Spacer(Modifier.height(24.dp))
+     Text("محفظة همسات", color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+     Spacer(Modifier.height(18.dp))
+     Surface(color = Color(0xFF352044), shape = RoundedCornerShape(24.dp), modifier = Modifier.fillMaxWidth()) { Column(Modifier.padding(24.dp)) { Text("رصيد تجريبي", color = lilac); Text("🪙 $coins", color = gold, fontSize = 36.sp, fontWeight = FontWeight.Bold); Text("لا تمثل هذه العملات رصيدًا حقيقيًا", color = Color.White, fontSize = 12.sp) } }
+     Spacer(Modifier.height(20.dp)); listOf("🎁 سجل الهدايا", "✨ مكافآت يومية (قريبًا)", "＋ شراء كوينز (غير مفعّل)", "📜 سجل الحركات").forEach { Surface(color = Color(0xFF24172F), shape = RoundedCornerShape(14.dp), modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) { Text(it, color = Color.White, modifier = Modifier.padding(16.dp)) } }
+    }
+    "register" -> SimplePage("إنشاء حساب", listOf("اسم المستخدم", "البريد الإلكتروني", "كلمة المرور", "واجهة تجريبية؛ لا تحفظ الحسابات بعد"), { page = "welcome" })
+    "profile" -> SimplePage("حسابي", listOf("اسم المستخدم: ضيف", "نبذة شخصية", "إعدادات الحساب"), { page = "home" })
+    else -> SimplePage("الأصدقاء والرسائل", listOf("قائمة الأصدقاء", "طلبات الصداقة", "الرسائل الخاصة غير مفعّلة بعد"), { page = "home" })
+   }
+  }
+ }
+}
+
+@Composable
+fun GoldButton(label: String, action: () -> Unit) {
+ Button(onClick = action, modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = gold, contentColor = night)) { Text(label, fontWeight = FontWeight.Bold, fontSize = 16.sp) }
+}
+
+@Composable
+fun SimplePage(title: String, rows: List<String>, back: () -> Unit) {
+ Column(Modifier.fillMaxSize().padding(22.dp)) {
+  Text("‹ رجوع", color = gold, modifier = Modifier.clickable { back() })
+  Spacer(Modifier.height(24.dp)); Text(title, color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+  Spacer(Modifier.height(16.dp))
+  rows.forEach { Surface(color = Color(0xFF24172F), shape = RoundedCornerShape(14.dp), modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) { Text(it, color = Color.White, modifier = Modifier.padding(16.dp)) } }
+ }
+}
