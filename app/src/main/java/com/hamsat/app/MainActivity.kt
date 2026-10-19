@@ -58,28 +58,10 @@ fun HamsatApp() {
  MaterialTheme(colorScheme = darkColorScheme(primary = gold, background = ink, surface = panel)) {
   Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF21142F), ink, Color(0xFF07060B))))) {
    when (page) {
-    "welcome" -> Column(Modifier.fillMaxSize().padding(horizontal = 26.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-     Box(Modifier.size(170.dp).clip(CircleShape).background(Brush.radialGradient(listOf(Color(0xFF72503D), Color(0xFF2B1C3A), ink))), contentAlignment = Alignment.Center) {
-      Column(horizontalAlignment = Alignment.CenterHorizontally) {
-       Text("♛", color = paleGold, fontSize = 82.sp)
-       Box(Modifier.width(72.dp).height(1.dp).background(Brush.horizontalGradient(listOf(Color.Transparent, gold, Color.Transparent))))
-       Text("H A M S A T", color = paleGold, fontSize = 10.sp, letterSpacing = 3.sp)
-      }
-     }
-     Spacer(Modifier.height(28.dp))
-     Text("هَمسات", color = paleGold, fontSize = 44.sp, fontWeight = FontWeight.Light, letterSpacing = 2.sp)
-     Text("مساحتك الخاصة للصوت والأصدقاء", color = lavender, fontSize = 14.sp)
-     Spacer(Modifier.height(24.dp))
-     Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-      FeaturePill("غرف صوتية"); Spacer(Modifier.width(7.dp)); FeaturePill("أصدقاء"); Spacer(Modifier.width(7.dp)); FeaturePill("هدايا")
-     }
-     Spacer(Modifier.height(40.dp))
-     GoldButton("دخول عالم همسات  ↗") { page = "login"; notice = "" }
-     Spacer(Modifier.height(12.dp))
-     OutlinedButton(onClick = { page = "register"; notice = "" }, modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(18.dp), border = BorderStroke(1.dp, Color(0xFF7A648F)), colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)) { Text("إنشاء حساب جديد") }
-     Spacer(Modifier.height(24.dp))
-     Text("نسخة تجريبية قيد التطوير", color = muted, fontSize = 11.sp)
-    }
+    "welcome" -> RoyalWelcome(
+      onLogin = { page = "login"; notice = "" },
+      onRegister = { page = "register"; notice = "" }
+    )
     "login" -> AuthPage("مرحبًا بعودتك", "سجّلي الدخول إلى عالم همسات", username, { username = it }, password, { password = it }, notice, { notice = it }, "دخول إلى التطبيق", submit = {
       if (username.isBlank() || password.isBlank()) notice = "اكتبي اسم المستخدم وكلمة المرور أولًا" else { notice = ""; page = "home" }
     }, back = { page = "welcome" })
@@ -188,19 +170,78 @@ fun HamsatApp() {
 fun FeaturePill(text: String) { Surface(shape = RoundedCornerShape(30.dp), color = Color(0x552D203B), border = BorderStroke(1.dp, Color(0xFF574464))) { Text(text, color = lavender, fontSize = 11.sp, modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) } }
 
 @Composable
+fun RoyalWelcome(onLogin: () -> Unit, onRegister: () -> Unit) {
+ Box(Modifier.fillMaxSize().background(ink)) {
+  AsyncImage(
+   model = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=90",
+   contentDescription = "صورة ملكية لهوية همسات",
+   modifier = Modifier.fillMaxSize(),
+   contentScale = ContentScale.Crop
+  )
+  Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xBB08060D), Color(0xAA100819), Color(0xFF090710)))))
+  Box(Modifier.fillMaxSize().padding(18.dp).clip(RoundedCornerShape(32.dp)).background(Color(0x221C1326)))
+  Column(Modifier.fillMaxSize().padding(horizontal = 26.dp, vertical = 32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween) {
+   Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+    Box(Modifier.width(42.dp).height(1.dp).background(Brush.horizontalGradient(listOf(Color.Transparent, gold))))
+    Text("  H A M S A T  ", color = paleGold, fontSize = 12.sp, letterSpacing = 3.sp, fontWeight = FontWeight.Medium)
+    Box(Modifier.width(42.dp).height(1.dp).background(Brush.horizontalGradient(listOf(gold, Color.Transparent))))
+   }
+   Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Box(Modifier.size(112.dp).clip(CircleShape).background(Brush.radialGradient(listOf(Color(0xFF76532E), Color(0xDD24152E), Color(0xAA090710)))), contentAlignment = Alignment.Center) {
+     Text("♛", color = paleGold, fontSize = 72.sp)
+    }
+    Spacer(Modifier.height(14.dp))
+    Text("هَمسات", color = paleGold, fontSize = 46.sp, fontWeight = FontWeight.Light, letterSpacing = 2.sp)
+    Spacer(Modifier.height(8.dp))
+    Text("صوتكِ... عالمكِ... وصداقات تشبهكِ", color = Color.White, fontSize = 14.sp)
+    Spacer(Modifier.height(18.dp))
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+     FeaturePill("غرف صوتية")
+     FeaturePill("أصدقاء")
+     FeaturePill("هدايا ملكية")
+    }
+   }
+   Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    GoldButton("دخول عالم همسات  ↗", onLogin)
+    Spacer(Modifier.height(12.dp))
+    OutlinedButton(onClick = onRegister, modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(18.dp), border = BorderStroke(1.dp, Color(0xFFD5B77D)), colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)) {
+     Text("إنشاء حساب جديد", fontWeight = FontWeight.SemiBold)
+    }
+    Spacer(Modifier.height(18.dp))
+    Text("تجربة همسات الملكية", color = paleGold, fontSize = 11.sp, letterSpacing = 1.sp)
+   }
+  }
+ }
+}
+
+@Composable
 fun AuthPage(title: String, subtitle: String, username: String, onUsername: (String)->Unit, password: String, onPassword: (String)->Unit, notice: String, onNotice: (String)->Unit, button: String, email: String? = null, onEmail: ((String)->Unit)? = null, submit: ()->Unit, back: ()->Unit) {
- Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-  Text("♛", color = gold, fontSize = 58.sp)
-  Text(title, color = paleGold, fontSize = 29.sp, fontWeight = FontWeight.Bold)
-  Text(subtitle, color = lavender, fontSize = 13.sp)
-  Spacer(Modifier.height(26.dp))
-  HamsatField(username, onUsername, "اسم المستخدم")
-  if (email != null && onEmail != null) { Spacer(Modifier.height(12.dp)); HamsatField(email, onEmail, "البريد الإلكتروني", type = KeyboardType.Email) }
-  Spacer(Modifier.height(12.dp)); HamsatField(password, onPassword, "كلمة المرور", password = true)
-  if (notice.isNotBlank()) { Spacer(Modifier.height(10.dp)); Text(notice, color = gold, fontSize = 12.sp) }
-  Spacer(Modifier.height(20.dp)); GoldButton(button, submit)
-  Spacer(Modifier.height(14.dp)); Text("نموذج تجريبي محلي؛ لا ينشئ حسابًا حقيقيًا عبر الإنترنت.", color = muted, fontSize = 11.sp)
-  Spacer(Modifier.height(18.dp)); Text("رجوع", color = Color.White, modifier = Modifier.clickable { back() }.padding(8.dp))
+ Box(Modifier.fillMaxSize().background(ink)) {
+  AsyncImage(model = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1100&q=85", contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+  Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xDD090710), Color(0xC9090710), Color(0xFF090710)))))
+  Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+   Box(Modifier.size(84.dp).clip(CircleShape).background(Brush.radialGradient(listOf(Color(0xFF73522F), Color(0xFF291B35), ink))), contentAlignment = Alignment.Center) {
+    Text("♛", color = paleGold, fontSize = 54.sp)
+   }
+   Spacer(Modifier.height(18.dp))
+   Text(title, color = paleGold, fontSize = 29.sp, fontWeight = FontWeight.Bold)
+   Spacer(Modifier.height(6.dp))
+   Text(subtitle, color = Color.White, fontSize = 13.sp)
+   Spacer(Modifier.height(26.dp))
+   Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(26.dp)).background(Color(0xDD17111F)).padding(18.dp)) {
+    HamsatField(username, onUsername, "اسم المستخدم")
+    if (email != null && onEmail != null) { Spacer(Modifier.height(12.dp)); HamsatField(email, onEmail, "البريد الإلكتروني", type = KeyboardType.Email) }
+    Spacer(Modifier.height(12.dp))
+    HamsatField(password, onPassword, "كلمة المرور", password = true)
+    if (notice.isNotBlank()) { Spacer(Modifier.height(10.dp)); Text(notice, color = gold, fontSize = 12.sp) }
+    Spacer(Modifier.height(18.dp))
+    GoldButton(button, submit)
+   }
+   Spacer(Modifier.height(14.dp))
+   Text("نموذج تجريبي محلي؛ لا ينشئ حسابًا حقيقيًا عبر الإنترنت.", color = Color(0xFFD2C7D9), fontSize = 11.sp)
+   Spacer(Modifier.height(12.dp))
+   Text("‹  رجوع", color = paleGold, modifier = Modifier.clickable { back() }.padding(10.dp))
+  }
  }
 }
 
