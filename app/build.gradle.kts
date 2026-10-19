@@ -6,7 +6,7 @@ plugins {
 android {
  namespace = "com.hamsat.app"
  compileSdk = 35
- defaultConfig { applicationId = "com.hamsat.app"; minSdk = 26; targetSdk = 35; versionCode = 10; versionName = "HAMSAT GOLD v10" }
+ defaultConfig { applicationId = "com.hamsat.app"; minSdk = 26; targetSdk = 35; versionCode = 11; versionName = "HAMSAT GOLD v11" }
  buildFeatures { compose = true }
  compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
  kotlinOptions { jvmTarget = "17" }
