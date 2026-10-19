@@ -43,10 +43,11 @@ fun HamsatApp() {
   Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF321347), night, Color(0xFF09070D))))) {
    when (page) {
     "welcome" -> Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-     Text("♛", color = gold, fontSize = 64.sp)
+     Text("✦  ♛  ✦", color = gold, fontSize = 30.sp)
+     Surface(color = Color(0xFF3A214B), shape = RoundedCornerShape(32.dp)) { Column(Modifier.padding(horizontal = 30.dp, vertical = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) { Text("👸🏻", fontSize = 76.sp); Text("✧ أميرة همسات ✧", color = Color(0xFFFFB7D5), fontSize = 15.sp, fontWeight = FontWeight.Bold) } }
      Text("همسات", color = gold, fontSize = 42.sp, fontWeight = FontWeight.Bold)
-     Text("H A M S A T", color = lilac, letterSpacing = 4.sp)
-     Spacer(Modifier.height(16.dp)); Text("غرف صوتية • أصدقاء • سهرات", color = Color.White)
+     Text("H A M S A T  •  G O L D", color = lilac, letterSpacing = 2.sp, fontSize = 12.sp)
+     Spacer(Modifier.height(16.dp)); Text("غرف صوتية • أصدقاء • هدايا • ألعاب", color = Color.White)
      Spacer(Modifier.height(36.dp)); GoldButton("تسجيل الدخول") { page = "login"; notice = "" }
      Spacer(Modifier.height(12.dp)); OutlinedButton(onClick = { page = "register"; notice = "" }, modifier = Modifier.fillMaxWidth()) { Text("إنشاء حساب جديد", color = Color.White) }
      Spacer(Modifier.height(12.dp)); Text("نسخة أولية: الحسابات والصوت الحقيقي غير مربوطين بعد", color = lilac, fontSize = 11.sp)
@@ -74,7 +75,9 @@ fun HamsatApp() {
       Text("🪙 $coins", color = gold, modifier = Modifier.clickable { page = "wallet" }.padding(10.dp))
      }
      Spacer(Modifier.height(20.dp)); Text("الغرف الصوتية", color = gold, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-     Text("غرف تجريبية للعرض فقط", color = lilac, fontSize = 12.sp); Spacer(Modifier.height(12.dp))
+     Text("غرف تجريبية للعرض فقط", color = lilac, fontSize = 12.sp); Spacer(Modifier.height(10.dp))
+     Surface(color = Color(0xFF352044), shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) { Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) { Text("👸🏻", fontSize = 42.sp); Spacer(Modifier.width(12.dp)); Column(Modifier.weight(1f)) { Text("كوني نجمة السهرة", color = gold, fontWeight = FontWeight.Bold); Text("هدايا • أصدقاء • لحظات مميزة", color = Color.White, fontSize = 11.sp) }; Text("💎", fontSize = 26.sp) } }
+     Spacer(Modifier.height(10.dp))
      val rooms = listOf("مجلس همسات" to "🎙️ 8 متصلين", "سهرات على الهوا" to "🌙 16 متصلًا", "قهوة الأصدقاء" to "☕ 5 متصلين", "فضفضة همسات" to "💜 3 متصلين")
      LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
       items(rooms) { item ->
@@ -88,18 +91,40 @@ fun HamsatApp() {
       }
      }
      Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-      Text("الرئيسية", color = gold)
-      Text("الأصدقاء", color = Color.White, modifier = Modifier.clickable { page = "friends" })
-      Text("المحفظة", color = Color.White, modifier = Modifier.clickable { page = "wallet" })
-      Text("حسابي", color = Color.White, modifier = Modifier.clickable { page = "profile" })
+      Text("🏠\nالرئيسية", color = gold, fontSize = 11.sp)
+      Text("👥\nالأصدقاء", color = Color.White, fontSize = 11.sp, modifier = Modifier.clickable { page = "friends" })
+      Text("🪙\nالمحفظة", color = Color.White, fontSize = 11.sp, modifier = Modifier.clickable { page = "wallet" })
+      Text("👤\nحسابي", color = Color.White, fontSize = 11.sp, modifier = Modifier.clickable { page = "profile" })
+      Text("🎁\nالهدايا", color = Color.White, fontSize = 11.sp, modifier = Modifier.clickable { page = "gifts" })
+      Text("🎮\nالألعاب", color = Color.White, fontSize = 11.sp, modifier = Modifier.clickable { page = "games" })
      }
     }
     "room" -> Column(Modifier.fillMaxSize().padding(22.dp)) {
      Text("‹ رجوع", color = gold, modifier = Modifier.clickable { page = "home" })
      Spacer(Modifier.height(26.dp)); Text(room, color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
      Text("غرفة تجريبية — البث الصوتي غير مفعّل بعد", color = lilac); Spacer(Modifier.height(36.dp))
-     repeat(3) { i -> Surface(color = Color(0xFF382249), shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) { Text(if (i == 0) "🎙️ مقعد المضيف" else "🎧 مقعد " + (i + 1), color = Color.White, modifier = Modifier.padding(20.dp)) } }
+     repeat(6) { i -> Surface(color = Color(0xFF382249), shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) { Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) { Text(listOf("👑","🎙️","🎧","🌸","💜","✨")[i], fontSize = 24.sp); Spacer(Modifier.width(12.dp)); Text(if (i == 0) "مقعد المضيف" else "مقعد " + (i + 1), color = Color.White) } } }
+     Text("🎁 هدايا سريعة: 🌹  💖  👑  💎", color = Color(0xFFFFB7D5), fontSize = 16.sp)
      Spacer(Modifier.weight(1f)); GoldButton("طلب المايك (تجريبي)") {}; Spacer(Modifier.height(10.dp)); GoldButton("🎁 الهدايا والمحفظة") { page = "wallet" }
+    }
+    "gifts" -> Column(Modifier.fillMaxSize().padding(20.dp)) {
+     Text("‹ رجوع", color = gold, modifier = Modifier.clickable { page = "home" }); Spacer(Modifier.height(20.dp))
+     Text("متجر الهدايا ✨", color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+     Text("هدايا للعرض التجريبي — الإرسال غير مفعّل", color = lilac, fontSize = 12.sp)
+     Spacer(Modifier.height(14.dp))
+     listOf("🌹  وردة ملكية  •  🪙 50", "💖  قلب الحب  •  🪙 100", "🎂  كعكة عيد  •  🪙 250", "🧸  دبدوب لطيف  •  🪙 300", "👑  تاج ذهبي  •  🪙 500", "💎  جوهرة فاخرة  •  🪙 750", "🚘  سيارة فاخرة  •  🪙 1000", "🦋  فراشة سحرية  •  🪙 150").forEach { item ->
+      Surface(color = Color(0xFF24172F), shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp).clickable { notice = "هذه هدية تجريبية؛ الإرسال الفعلي سيضاف لاحقًا." }) { Text(item, color = Color.White, fontSize = 16.sp, modifier = Modifier.padding(15.dp)) }
+     }
+     if (notice.isNotBlank()) Text(notice, color = lilac, fontSize = 12.sp)
+    }
+    "games" -> Column(Modifier.fillMaxSize().padding(20.dp)) {
+     Text("‹ رجوع", color = gold, modifier = Modifier.clickable { page = "home" }); Spacer(Modifier.height(20.dp))
+     Text("ركن الألعاب 🎮", color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+     Text("ألعاب السهرة — نماذج أولية", color = lilac, fontSize = 12.sp); Spacer(Modifier.height(12.dp))
+     listOf("🎡  عجلة الحظ", "🧠  اختبر ذكاءك", "🎲  النرد المحظوظ", "🎁  صندوق المفاجآت", "💞  أسئلة الأصدقاء", "🏆  تحدي السهرة").forEach { item ->
+      Surface(color = Color(0xFF24172F), shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp).clickable { notice = "اللعبة $item نموذج عرض، وسيتم تفعيلها لاحقًا." }) { Text(item + "     ← ابدئي", color = Color.White, fontSize = 17.sp, modifier = Modifier.padding(16.dp)) }
+     }
+     if (notice.isNotBlank()) Text(notice, color = lilac, fontSize = 12.sp)
     }
     "wallet" -> Column(Modifier.fillMaxSize().padding(22.dp)) {
      Text("‹ رجوع", color = gold, modifier = Modifier.clickable { page = "home" }); Spacer(Modifier.height(24.dp))
