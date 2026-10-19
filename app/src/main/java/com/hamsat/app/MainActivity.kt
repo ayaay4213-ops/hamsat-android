@@ -77,12 +77,12 @@ fun HamsatApp() {
      Spacer(Modifier.height(24.dp))
      Text("نسخة تجريبية قيد التطوير", color = muted, fontSize = 11.sp)
     }
-    "login" -> AuthPage("مرحبًا بعودتك", "سجّلي الدخول إلى عالم همسات", username, { username = it }, password, { password = it }, notice, { notice = it }, "دخول إلى التطبيق") {
+    "login" -> AuthPage("مرحبًا بعودتك", "سجّلي الدخول إلى عالم همسات", username, { username = it }, password, { password = it }, notice, { notice = it }, "دخول إلى التطبيق", submit = {
       if (username.isBlank() || password.isBlank()) notice = "اكتبي اسم المستخدم وكلمة المرور أولًا" else { notice = ""; page = "home" }
-    } { page = "welcome" }
-    "register" -> AuthPage("انضمي إلى همسات", "اصنعي لحظات جميلة مع الأصدقاء", username, { username = it }, password, { password = it }, notice, { notice = it }, "إنشاء حساب تجريبي", email, { email = it }) {
+    }, back = { page = "welcome" })
+    "register" -> AuthPage("انضمي إلى همسات", "اصنعي لحظات جميلة مع الأصدقاء", username, { username = it }, password, { password = it }, notice, { notice = it }, "إنشاء حساب تجريبي", email, { email = it }, submit = {
       if (username.isBlank() || email.isBlank() || password.isBlank()) notice = "املئي الخانات الثلاث أولًا" else { notice = ""; page = "home" }
-    } { page = "welcome" }
+    }, back = { page = "welcome" })
     "home" -> Column(Modifier.fillMaxSize()) {
      Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 18.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
       Column {
