@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -95,7 +98,9 @@ fun HamsatApp() {
      }
      LazyColumn(Modifier.weight(1f).padding(horizontal = 18.dp), verticalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(top = 20.dp, bottom = 18.dp)) {
       item {
-       Box(Modifier.fillMaxWidth().height(174.dp).clip(RoundedCornerShape(28.dp)).background(Brush.linearGradient(listOf(Color(0xFF59406B), Color(0xFF24152E), Color(0xFF11101A))))) {
+       Box(Modifier.fillMaxWidth().height(190.dp).clip(RoundedCornerShape(28.dp)).background(Brush.linearGradient(listOf(Color(0xFF59406B), Color(0xFF24152E), Color(0xFF11101A))))) {
+        AsyncImage(model = "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1100&q=85", contentDescription = "صورة فاخرة لعضوة همسات", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+        Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xF0090710), Color(0xBB130B1C), Color(0x22200F2A)))))
         Column(Modifier.align(Alignment.CenterStart).padding(start = 20.dp, end = 90.dp)) {
          Text("ليلتك تبدأ هنا", color = paleGold, fontSize = 24.sp, fontWeight = FontWeight.Bold)
          Spacer(Modifier.height(6.dp)); Text("اكتشفي غرفًا جديدة، واصنعي صداقات", color = Color.White, fontSize = 12.sp)
@@ -111,9 +116,13 @@ fun HamsatApp() {
         Text("عرض الكل  ›", color = gold, fontSize = 12.sp)
        }
       }
-      items(rooms) { item ->
-       Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp)).background(Brush.horizontalGradient(listOf(Color(0xFF2B1C3B), panel))).clickable { room = item.first; page = "room" }.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-        Box(Modifier.size(62.dp).clip(RoundedCornerShape(19.dp)).background(Brush.linearGradient(listOf(Color(0xFF77543D), Color(0xFF38264A)))), contentAlignment = Alignment.Center) { Text(item.third, color = paleGold, fontSize = 34.sp) }
+      itemsIndexed(rooms) { index, item ->
+       Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp)).background(Brush.horizontalGradient(listOf(Color(0xFF30203A), Color(0xFF151019)))).clickable { room = item.first; page = "room" }.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(76.dp).clip(RoundedCornerShape(18.dp)).background(Brush.linearGradient(listOf(Color(0xFF77543D), Color(0xFF38264A)))), contentAlignment = Alignment.Center) {
+         AsyncImage(model = listOf("https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=320&q=85","https://images.unsplash.com/photo-1529139574466-a303027c1d8?auto=format&fit=crop&w=320&q=85","https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=320&q=85","https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=320&q=85")[index], contentDescription = "صورة شخصية للغرفة", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Color(0x99090710)))))
+         Text("✦", Modifier.align(Alignment.BottomEnd).padding(4.dp), color = paleGold, fontSize = 16.sp)
+        }
         Spacer(Modifier.width(13.dp))
         Column(Modifier.weight(1f)) {
          Text(item.first, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
