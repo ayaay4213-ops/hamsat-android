@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -32,6 +35,10 @@ fun HamsatApp() {
  var page by remember { mutableStateOf("welcome") }
  var room by remember { mutableStateOf("مجلس همسات") }
  var coins by remember { mutableIntStateOf(1200) }
+ var username by remember { mutableStateOf("") }
+ var email by remember { mutableStateOf("") }
+ var password by remember { mutableStateOf("") }
+ var notice by remember { mutableStateOf("") }
  MaterialTheme(colorScheme = darkColorScheme(primary = gold, background = night, surface = Color(0xFF24172F))) {
   Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF321347), night, Color(0xFF09070D))))) {
    when (page) {
@@ -40,13 +47,30 @@ fun HamsatApp() {
      Text("همسات", color = gold, fontSize = 42.sp, fontWeight = FontWeight.Bold)
      Text("H A M S A T", color = lilac, letterSpacing = 4.sp)
      Spacer(Modifier.height(16.dp)); Text("غرف صوتية • أصدقاء • سهرات", color = Color.White)
-     Spacer(Modifier.height(36.dp)); GoldButton("دخول إلى همسات") { page = "home" }
-     Spacer(Modifier.height(12.dp)); OutlinedButton(onClick = { page = "register" }, modifier = Modifier.fillMaxWidth()) { Text("إنشاء حساب جديد", color = Color.White) }
+     Spacer(Modifier.height(36.dp)); GoldButton("تسجيل الدخول") { page = "login"; notice = "" }
+     Spacer(Modifier.height(12.dp)); OutlinedButton(onClick = { page = "register"; notice = "" }, modifier = Modifier.fillMaxWidth()) { Text("إنشاء حساب جديد", color = Color.White) }
      Spacer(Modifier.height(12.dp)); Text("نسخة أولية: الحسابات والصوت الحقيقي غير مربوطين بعد", color = lilac, fontSize = 11.sp)
+    }
+    "login" -> Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+     Text("♛", color = gold, fontSize = 54.sp)
+     Text("تسجيل الدخول", color = gold, fontSize = 30.sp, fontWeight = FontWeight.Bold)
+     Spacer(Modifier.height(8.dp)); Text("أهلًا بعودتك إلى همسات", color = lilac)
+     Spacer(Modifier.height(24.dp))
+     HamsatField(username, { username = it }, "اسم المستخدم")
+     Spacer(Modifier.height(12.dp))
+     HamsatField(password, { password = it }, "كلمة المرور", password = true)
+     if (notice.isNotBlank()) { Spacer(Modifier.height(10.dp)); Text(notice, color = gold, fontSize = 13.sp) }
+     Spacer(Modifier.height(20.dp))
+     GoldButton("دخول تجريبي") {
+      if (username.isBlank() || password.isBlank()) notice = "اكتبي اسم المستخدم وكلمة المرور أولًا"
+      else { notice = ""; page = "home" }
+     }
+     Spacer(Modifier.height(12.dp)); Text("هذه تجربة محلية؛ لا يتم التحقق من الحساب أو حفظه على الإنترنت.", color = lilac, fontSize = 12.sp)
+     Spacer(Modifier.height(18.dp)); Text("رجوع", color = Color.White, modifier = Modifier.clickable { page = "welcome" }.padding(8.dp))
     }
     "home" -> Column(Modifier.fillMaxSize().padding(18.dp)) {
      Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-      Column { Text("أهلًا بك في", color = lilac); Text("همسات ♛", color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold) }
+      Column { Text("أهلًا ${username.ifBlank { "ضيف" }} في", color = lilac); Text("همسات ♛", color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold) }
       Text("🪙 $coins", color = gold, modifier = Modifier.clickable { page = "wallet" }.padding(10.dp))
      }
      Spacer(Modifier.height(20.dp)); Text("الغرف الصوتية", color = gold, fontSize = 22.sp, fontWeight = FontWeight.Bold)
@@ -84,12 +108,44 @@ fun HamsatApp() {
      Surface(color = Color(0xFF352044), shape = RoundedCornerShape(24.dp), modifier = Modifier.fillMaxWidth()) { Column(Modifier.padding(24.dp)) { Text("رصيد تجريبي", color = lilac); Text("🪙 $coins", color = gold, fontSize = 36.sp, fontWeight = FontWeight.Bold); Text("لا تمثل هذه العملات رصيدًا حقيقيًا", color = Color.White, fontSize = 12.sp) } }
      Spacer(Modifier.height(20.dp)); listOf("🎁 سجل الهدايا", "✨ مكافآت يومية (قريبًا)", "＋ شراء كوينز (غير مفعّل)", "📜 سجل الحركات").forEach { Surface(color = Color(0xFF24172F), shape = RoundedCornerShape(14.dp), modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) { Text(it, color = Color.White, modifier = Modifier.padding(16.dp)) } }
     }
-    "register" -> SimplePage("إنشاء حساب", listOf("اسم المستخدم", "البريد الإلكتروني", "كلمة المرور", "واجهة تجريبية؛ لا تحفظ الحسابات بعد"), { page = "welcome" })
-    "profile" -> SimplePage("حسابي", listOf("اسم المستخدم: ضيف", "نبذة شخصية", "إعدادات الحساب"), { page = "home" })
+    "register" -> Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+     Text("إنشاء حساب", color = gold, fontSize = 30.sp, fontWeight = FontWeight.Bold)
+     Spacer(Modifier.height(20.dp))
+     HamsatField(username, { username = it }, "اسم المستخدم")
+     Spacer(Modifier.height(12.dp)); HamsatField(email, { email = it }, "البريد الإلكتروني", type = KeyboardType.Email)
+     Spacer(Modifier.height(12.dp)); HamsatField(password, { password = it }, "كلمة المرور", password = true)
+     if (notice.isNotBlank()) { Spacer(Modifier.height(10.dp)); Text(notice, color = gold, fontSize = 13.sp) }
+     Spacer(Modifier.height(20.dp)); GoldButton("متابعة تجريبية") {
+      if (username.isBlank() || email.isBlank() || password.isBlank()) notice = "املئي الخانات الثلاث أولًا"
+      else { notice = ""; page = "home" }
+     }
+     Spacer(Modifier.height(12.dp)); Text("تنبيه: هذا نموذج تجريبي، لا ينشئ حسابًا حقيقيًا ولا يحفظ البيانات على الإنترنت.", color = lilac, fontSize = 12.sp)
+     Spacer(Modifier.height(18.dp)); Text("رجوع", color = Color.White, modifier = Modifier.clickable { page = "welcome" }.padding(8.dp))
+    }
+    "profile" -> SimplePage("حسابي", listOf("اسم المستخدم: ${username.ifBlank { "ضيف" }}", "نبذة شخصية", "إعدادات الحساب"), { page = "home" })
     else -> SimplePage("الأصدقاء والرسائل", listOf("قائمة الأصدقاء", "طلبات الصداقة", "الرسائل الخاصة غير مفعّلة بعد"), { page = "home" })
    }
   }
  }
+}
+
+@Composable
+fun HamsatField(value: String, onValueChange: (String) -> Unit, label: String, password: Boolean = false, type: KeyboardType = KeyboardType.Text) {
+ OutlinedTextField(
+  value = value,
+  onValueChange = onValueChange,
+  label = { Text(label, color = lilac) },
+  singleLine = true,
+  modifier = Modifier.fillMaxWidth(),
+  shape = RoundedCornerShape(14.dp),
+  keyboardOptions = KeyboardOptions(keyboardType = if (password) KeyboardType.Password else type),
+  visualTransformation = if (password) PasswordVisualTransformation() else androidx.compose.ui.text.input.VisualTransformation.None,
+  colors = OutlinedTextFieldDefaults.colors(
+   focusedTextColor = Color.White, unfocusedTextColor = Color.White,
+   focusedBorderColor = gold, unfocusedBorderColor = lilac,
+   cursorColor = gold, focusedLabelColor = gold, unfocusedLabelColor = lilac
+  )
+ )
 }
 
 @Composable
