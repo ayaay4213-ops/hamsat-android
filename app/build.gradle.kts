@@ -6,7 +6,7 @@ plugins {
 android {
  namespace = "com.hamsat.app"
  compileSdk = 35
- defaultConfig { applicationId = "com.hamsat.app.preview"; minSdk = 26; targetSdk = 35; versionCode = 12; versionName = "HAMSAT GOLD Preview 12" }
+ defaultConfig { applicationId = "com.hamsat.app.preview"; minSdk = 26; targetSdk = 35; versionCode = 13; versionName = "HAMSAT ROYAL Preview 13" }
  buildFeatures { compose = true }
  compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
  kotlinOptions { jvmTarget = "17" }
@@ -18,4 +18,5 @@ dependencies {
  implementation("androidx.compose.ui:ui-graphics")
  implementation("androidx.compose.material3:material3")
  implementation("androidx.compose.material:material-icons-extended")
+ implementation("io.coil-kt:coil-compose:2.7.0")
 }
