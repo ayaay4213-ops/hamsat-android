@@ -43,14 +43,43 @@ fun HamsatApp() {
   Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF321347), night, Color(0xFF09070D))))) {
    when (page) {
     "welcome" -> Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-     Text("✦  ♛  ✦", color = gold, fontSize = 30.sp)
-     Surface(color = Color(0xFF3A214B), shape = RoundedCornerShape(32.dp)) { Column(Modifier.padding(horizontal = 30.dp, vertical = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) { Text("👸🏻", fontSize = 76.sp); Text("✧ أميرة همسات ✧", color = Color(0xFFFFB7D5), fontSize = 15.sp, fontWeight = FontWeight.Bold) } }
+     Surface(
+      color = Color(0xFF21152D),
+      shape = RoundedCornerShape(36.dp),
+      modifier = Modifier.size(148.dp)
+     ) {
+      Box(
+       modifier = Modifier.fillMaxSize().background(
+        Brush.verticalGradient(listOf(Color(0xFF523A63), Color(0xFF17101F)))
+       ),
+       contentAlignment = Alignment.Center
+      ) {
+       Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text("♛", color = gold, fontSize = 64.sp)
+        Text("H", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+       }
+      }
+     }
+     Spacer(Modifier.height(22.dp))
      Text("همسات", color = gold, fontSize = 42.sp, fontWeight = FontWeight.Bold)
-     Text("H A M S A T  •  G O L D", color = lilac, letterSpacing = 2.sp, fontSize = 12.sp)
-     Spacer(Modifier.height(16.dp)); Text("غرف صوتية • أصدقاء • هدايا • ألعاب", color = Color.White)
-     Spacer(Modifier.height(36.dp)); GoldButton("تسجيل الدخول") { page = "login"; notice = "" }
-     Spacer(Modifier.height(12.dp)); OutlinedButton(onClick = { page = "register"; notice = "" }, modifier = Modifier.fillMaxWidth()) { Text("إنشاء حساب جديد", color = Color.White) }
-     Spacer(Modifier.height(12.dp)); Text("نسخة أولية: الحسابات والصوت الحقيقي غير مربوطين بعد", color = lilac, fontSize = 11.sp)
+     Text("H A M S A T   G O L D", color = lilac, letterSpacing = 2.sp, fontSize = 12.sp)
+     Spacer(Modifier.height(10.dp))
+     Surface(color = Color(0x332A1B38), shape = RoundedCornerShape(50.dp)) {
+      Text("غرف صوتية  •  أصدقاء  •  لحظات مميزة", color = Color.White, fontSize = 13.sp, modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp))
+     }
+     Spacer(Modifier.height(32.dp))
+     GoldButton("دخول عالم همسات") { page = "login"; notice = "" }
+     Spacer(Modifier.height(12.dp))
+     OutlinedButton(
+      onClick = { page = "register"; notice = "" },
+      modifier = Modifier.fillMaxWidth().height(52.dp),
+      shape = RoundedCornerShape(16.dp),
+      colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+      border = androidx.compose.foundation.BorderStroke(1.dp, lilac)
+     ) { Text("إنشاء حساب جديد", fontWeight = FontWeight.SemiBold) }
+     Spacer(Modifier.height(20.dp))
+     Text("نسخة أولية قيد التطوير", color = lilac, fontSize = 12.sp)
+     Text("الصوت المباشر والحسابات الحقيقية ستُربط لاحقًا", color = Color(0xFFAAA0B8), fontSize = 10.sp)
     }
     "login" -> Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
      Text("♛", color = gold, fontSize = 54.sp)
